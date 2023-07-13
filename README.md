@@ -4,6 +4,11 @@
 
 * To display my professional skills
 
+## How to View this project
+
+* [Live Deployment](https://fullstack-ticket-sales-app.vercel.app/)
+* [To Test the API, use this Postman Documentation](https://www.postman.com/speeding-resonance-761807/workspace/fullstack-ticket-sales-api-documentation/overview)
+
 ## Main Features of This Project
 
 * Login Feature
