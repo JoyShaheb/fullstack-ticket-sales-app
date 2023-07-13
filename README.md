@@ -35,3 +35,10 @@
 * JWT for authentication
 * Passport for authentication
 * stripe for payment
+
+## ESLINT, Husky, Prettier setup
+
+* [setup husky on custom directories](https://scottsauber.com/2021/06/01/using-husky-git-hooks-and-lint-staged-with-nested-folders/)
+* [setup lint staged](https://www.npmjs.com/package/lint-staged)
+* [husky setup example 1](https://github.com/webpilot-ai/Webpilot)
+* [husky setup example 2](https://github.com/bchiang7/v4)
