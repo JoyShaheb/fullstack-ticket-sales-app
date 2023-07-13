@@ -8,12 +8,15 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "format": "prettier --write \"**/*.{js,jsx,json,md,ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,md,ts,tsx}\"",
     "prepare": "cd ../ && husky install ./frontend/.husky",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint"
+    "*.{js,jsx,ts,tsx}": [
+      "eslint",
+      "prettier --write"
+    ]
   },
   "pre-commit": "lint-staged",
   "dependencies": {
