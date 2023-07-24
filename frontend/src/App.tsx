@@ -1,4 +1,3 @@
-import React from "react";
 import { Home, ErrorPage, UserProfile } from "./pages";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
