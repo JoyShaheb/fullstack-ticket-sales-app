@@ -1,7 +1,6 @@
 import Home from "./Home";
+import Login from "./Login";
+import Signup from "./Signup";
 import ErrorPage from "./ErrorPage";
-import UserProfile from "./UserProfile";
-import Login from "./Auth/Login";
-import Signup from "./Auth/Signup";
 
-export { Home, ErrorPage, UserProfile, Login, Signup };
+export { Home, Login, Signup, ErrorPage };
