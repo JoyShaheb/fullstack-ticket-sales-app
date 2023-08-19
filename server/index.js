@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
+import { UserRouter } from "./Routes/userRoutes.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 5001;
@@ -18,6 +19,7 @@ app.use(
     origin: "http://localhost:5173",
   })
 );
+app.use("/api/users/authenticate", UserRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);
