@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { systemSlice } from "./Slices/systemSlice";
 import { UserAuthAPI } from "./API/UserAuthAPI";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { userSlice } from "./Slices/userSlice";
 
 const persistConfig = {
   key: "root",
@@ -15,9 +16,12 @@ const persistedSystemReducer = persistReducer(
   systemSlice.reducer
 );
 
+const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
+
 export const store = configureStore({
   reducer: {
     system: persistedSystemReducer,
+    user: persistedUserReducer,
     [UserAuthAPI.reducerPath]: UserAuthAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
