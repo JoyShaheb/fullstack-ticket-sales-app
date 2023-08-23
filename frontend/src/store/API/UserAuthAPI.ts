@@ -7,7 +7,7 @@ export const UserAuthAPI = createApi({
       import.meta.env.VITE_APP_LOCAL_API_BASE_URL
     }/api/users/authenticate`,
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "UpdateUser"],
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (signupParams) => ({
@@ -25,7 +25,20 @@ export const UserAuthAPI = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+
+    updateUser: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/update/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["UpdateUser"],
+    }),
   }),
 });
 
-export const { useCreateUserMutation, useLoginUserMutation } = UserAuthAPI;
+export const {
+  useCreateUserMutation,
+  useLoginUserMutation,
+  useUpdateUserMutation,
+} = UserAuthAPI;
