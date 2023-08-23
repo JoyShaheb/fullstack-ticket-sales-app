@@ -26,6 +26,7 @@ export const createUser = async (req, res) => {
     res.status(500).json({ message: "something went wrong", err });
   }
 };
+
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -72,6 +73,46 @@ export const loginUser = async (req, res) => {
         userRole: findUser.userRole,
       },
     });
+  } catch (err) {
+    res.status(500).json({ message: "something went wrong", err });
+  }
+};
+
+export const updateUserData = async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      profilePicture,
+      address,
+      phoneNumber,
+      // email,
+      // password,
+      // userRole,
+    } = req.body;
+
+    const { id } = req.params;
+
+    const findUser = await UserModel.findOne({ _id: id });
+
+    if (!findUser) {
+      return res.status(400).json({ message: "User does not exist" });
+    }
+
+    const updatedUser = await UserModel.findByIdAndUpdate(id, {
+      firstName,
+      lastName,
+      profilePicture,
+      address,
+      phoneNumber,
+      // email,
+      // password,
+      // userRole,
+    });
+
+    res
+      .status(200)
+      .json({ message: "User data updated successfully", updatedUser });
   } catch (err) {
     res.status(500).json({ message: "something went wrong", err });
   }

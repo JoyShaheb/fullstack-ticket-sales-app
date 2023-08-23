@@ -8,18 +8,22 @@ import {
   UserIcon,
   MoonIcon,
   CalendarDaysIcon,
+  UserCircleIcon,
+  ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import NavLink from "./NavLink";
 import BasicSwitch from "../Switch/BasicSwitch";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { themeSwitch, ThemeTypesEnum } from "../../store/Slices/systemSlice";
+import { gradientTextStyles } from "../Text/TextStyles";
+import { logoutSuccess } from "../../store/Slices/userSlice";
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
 
-  const mode = useSelector((x: RootState) => x.system.mode);
-  console.log(mode);
+  const mode: string = useSelector((x: RootState) => x.system.mode);
+  const token: string = useSelector((x: RootState) => x.user.token);
   const iconStyles =
     "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white";
 
@@ -47,39 +51,70 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+          <div
+            className={`${gradientTextStyles} font-bold text-center text-2xl mb-3`}
+          >
+            Ticket Sales
+          </div>
           <ul className="space-y-2 font-medium">
-            <NavLink
-              to="/"
-              label="Dashboard"
-              icon={<ChartPieIcon className={iconStyles} />}
-            />
+            {token && (
+              <NavLink
+                to="/"
+                label="Dashboard"
+                icon={<ChartPieIcon className={iconStyles} />}
+              />
+            )}
             <NavLink
               to="/events"
               label="Events"
               icon={<CalendarDaysIcon className={iconStyles} />}
             />
+            {token && (
+              <>
+                <NavLink
+                  to="/bookmark"
+                  label="Bookmark"
+                  icon={<BookmarkIcon className={iconStyles} />}
+                />
+                <NavLink
+                  to="/purchase-history"
+                  label="Purchase History"
+                  icon={<ReceiptPercentIcon className={iconStyles} />}
+                />
+                <NavLink
+                  to="/profile"
+                  label="Profile"
+                  icon={<UserCircleIcon className={iconStyles} />}
+                />
+              </>
+            )}
 
-            <NavLink
-              to="/bookmark"
-              label="Bookmark"
-              icon={<BookmarkIcon className={iconStyles} />}
-            />
-            <NavLink
-              to="/purchase-history"
-              label="Purchase History"
-              icon={<ReceiptPercentIcon className={iconStyles} />}
-            />
-            <NavLink
-              to="/login"
-              label="Login"
-              icon={<LockClosedIcon className={iconStyles} />}
-            />
+            {token && (
+              <NavLink
+                to="/login"
+                label="Signout"
+                icon={<ArrowRightOnRectangleIcon className={iconStyles} />}
+                onClick={() => {
+                  dispatch(logoutSuccess());
+                }}
+              />
+            )}
 
-            <NavLink
-              to="/signup"
-              label="Signup"
-              icon={<UserIcon className={iconStyles} />}
-            />
+            {!token && (
+              <>
+                <NavLink
+                  to="/login"
+                  label="Login"
+                  icon={<LockClosedIcon className={iconStyles} />}
+                />
+                <NavLink
+                  to="/signup"
+                  label="Signup"
+                  icon={<UserIcon className={iconStyles} />}
+                />
+              </>
+            )}
+
             <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  group">
               <MoonIcon className={iconStyles} />
               <span className="flex-1 ml-3 whitespace-nowrap">Dark Mode</span>
