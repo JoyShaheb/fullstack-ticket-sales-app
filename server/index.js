@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import { UserRouter } from "./Routes/userRoutes.js";
+import { EventRoutes } from "./Routes/eventRoutes.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 5001;
@@ -20,6 +21,7 @@ app.use(
   })
 );
 app.use("/api/users/authenticate", UserRouter);
+app.use("/api/events", EventRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);

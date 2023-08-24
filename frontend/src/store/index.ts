@@ -5,6 +5,7 @@ import { systemSlice } from "./Slices/systemSlice";
 import { UserAuthAPI } from "./API/UserAuthAPI";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { userSlice } from "./Slices/userSlice";
+import { EventsAPI } from "./API/EventsAPI";
 
 const persistConfig = {
   key: "root",
@@ -23,9 +24,10 @@ export const store = configureStore({
     system: persistedSystemReducer,
     user: persistedUserReducer,
     [UserAuthAPI.reducerPath]: UserAuthAPI.reducer,
+    [EventsAPI.reducerPath]: EventsAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(UserAuthAPI.middleware),
+    getDefaultMiddleware().concat(EventsAPI.middleware),
 });
 
 export const persistedStore = persistStore(store);
