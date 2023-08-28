@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Bars3Icon,
   ChartPieIcon,
@@ -9,6 +9,7 @@ import {
   MoonIcon,
   CalendarDaysIcon,
   UserCircleIcon,
+  XMarkIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import NavLink from "./NavLink";
@@ -21,6 +22,8 @@ import { logoutSuccess } from "../../store/Slices/userSlice";
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const mode: string = useSelector((x: RootState) => x.system.mode);
   const token: string = useSelector((x: RootState) => x.user.token);
@@ -40,17 +43,29 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         data-drawer-toggle="default-sidebar"
         aria-controls="default-sidebar"
         type="button"
-        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`}
       >
         <Bars3Icon className="w-6" strokeWidth={2} />
       </button>
 
       <aside
         id="default-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+          !isOpen && "-translate-x-full"
+        } sm:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+          <button
+            className={`inline-flex items-center ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`}
+          >
+            <XMarkIcon
+              className="w-6"
+              strokeWidth={2}
+              onClick={() => setIsOpen(false)}
+            />
+          </button>
           <div
             className={`${gradientTextStyles} font-bold text-center text-2xl mb-3`}
           >

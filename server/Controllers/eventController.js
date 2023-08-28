@@ -1,4 +1,8 @@
 import { EventModel } from "../Models/EventModel.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const getAllEvents = async (req, res) => {
   try {
@@ -23,12 +27,17 @@ export const getOneEvent = async (req, res) => {
 
 export const createEvent = async (req, res) => {
   try {
-    // const { title, description, date, location, image } = req.body;
+    const { token } = req.cookies;
 
-    const newEvent = await EventModel.create({
-      ...req.body,
+    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
+      if (err) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+      const newEvent = await EventModel.create({
+        ...req.body,
+      });
+      res.status(200).json({ message: "Event created successfully", newEvent });
     });
-    res.status(200).json({ message: "Event created successfully", newEvent });
   } catch (err) {
     res.status(500).json({ message: "something went wrong", err });
   }

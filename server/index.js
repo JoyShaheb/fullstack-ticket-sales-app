@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { UserRouter } from "./Routes/userRoutes.js";
 import { EventRoutes } from "./Routes/eventRoutes.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const PORT = process.env.PORT || 5001;
@@ -15,6 +16,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
