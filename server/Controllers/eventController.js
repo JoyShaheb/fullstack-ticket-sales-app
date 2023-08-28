@@ -70,12 +70,3 @@ export const searchEvent = async (req, res) => {
     res.status(500).json({ message: "something went wrong", err });
   }
 };
-
-// bookmarked events
-export const getMultipleEvents = async (req, res) => {
-  try {
-    res.status(200).json({ message: "searched event" });
-  } catch (err) {
-    res.status(500).json({ message: "something went wrong", err });
-  }
-};
