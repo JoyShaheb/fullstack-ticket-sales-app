@@ -19,7 +19,7 @@ export const getOneEvent = async (req, res) => {
     const { id } = req.params;
 
     const findOneEvent = await EventModel.findOne({ _id: id });
-    res.status(200).json({ message: "One event", findOneEvent });
+    res.status(200).json(findOneEvent);
   } catch (err) {
     res.status(500).json({ message: "something went wrong", err });
   }

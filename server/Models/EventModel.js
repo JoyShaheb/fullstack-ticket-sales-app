@@ -23,7 +23,7 @@ const EventScema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: false,
+    required: true,
     default: "",
   },
   // related events feature add later

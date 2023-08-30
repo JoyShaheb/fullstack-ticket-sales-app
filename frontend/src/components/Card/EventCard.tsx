@@ -1,6 +1,7 @@
 import { FC } from "react";
 import dayjs from "dayjs";
 import { BookmarkIcon } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 
 interface IEventCardProps {
   title: string;
@@ -8,6 +9,7 @@ interface IEventCardProps {
   image: string;
   date: Date;
   location: string;
+  _id: string;
 }
 
 const EventCard: FC<IEventCardProps> = ({
@@ -16,9 +18,13 @@ const EventCard: FC<IEventCardProps> = ({
   image,
   location,
   title,
+  _id,
 }) => {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <Link
+      to={`/events/${_id}`}
+      className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+    >
       <img
         className="rounded-t-lg"
         src={
@@ -44,7 +50,7 @@ const EventCard: FC<IEventCardProps> = ({
         </p>
         <BookmarkIcon className="h-6 ms-auto cursor-pointer" />
       </div>
-    </div>
+    </Link>
   );
 };
 

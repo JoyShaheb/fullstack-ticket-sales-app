@@ -12,6 +12,10 @@ export const EventsAPI = createApi({
       query: () => "/get-all-events",
       providesTags: ["Events"],
     }),
+    getOneEvent: builder.query<IEventData, string>({
+      query: (id) => `/get-one-event/${id}`,
+      providesTags: ["Events"],
+    }),
     CreateEvent: builder.mutation({
       query: (body) => ({
         url: "/create-event",
@@ -23,4 +27,8 @@ export const EventsAPI = createApi({
   }),
 });
 
-export const { useGetAllEventsQuery, useCreateEventMutation } = EventsAPI;
+export const {
+  useGetAllEventsQuery,
+  useCreateEventMutation,
+  useGetOneEventQuery,
+} = EventsAPI;

@@ -6,6 +6,7 @@ import BookMark from "./BookMark";
 import PurchaseHistory from "./PurchaseHistory";
 import Events from "./Events";
 import Profile from "./Profile";
+import EventDetailsPage from "./EventDetailsPage";
 
 export {
   Home,
@@ -16,4 +17,5 @@ export {
   PurchaseHistory,
   Events,
   Profile,
+  EventDetailsPage,
 };

@@ -60,6 +60,7 @@ export const loginUser = async (req, res) => {
     return res.status(200).json({
       message: "User logged in successfully",
       userData: {
+        // this is not the correct way to send the token, rather, pull it from cookie storage from the frontend
         token,
         // Exclude the 'password' property
         email: findUser.email,
