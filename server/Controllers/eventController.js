@@ -33,6 +33,15 @@ export const createEvent = async (req, res) => {
       if (err) {
         return res.status(400).json({ message: "Invalid credentials" });
       }
+      if (decodedToken.role !== "admin") {
+        return res
+          .status(400)
+          .json({
+            message:
+              "You are not authorized, please login as a Admin to create events",
+          });
+      }
+
       const newEvent = await EventModel.create({
         ...req.body,
       });

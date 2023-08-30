@@ -44,6 +44,7 @@ export const loginUser = async (req, res) => {
       {
         email: findUser.email,
         userID: findUser._id,
+        role: findUser.userRole,
       },
       process.env.JWT_SECRET_KEY,
       {
