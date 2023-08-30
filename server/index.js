@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_DEPLOYMENT_URL,
   })
 );
 app.use("/api/users/authenticate", UserRouter);
