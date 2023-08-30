@@ -19,11 +19,12 @@ import { RootState } from "../../store";
 import { themeSwitch, ThemeTypesEnum } from "../../store/Slices/systemSlice";
 import { gradientTextStyles } from "../Text/TextStyles";
 import { logoutSuccess } from "../../store/Slices/userSlice";
+import SearchBar from "../SearchBar/SearchBar";
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const mode: string = useSelector((x: RootState) => x.system.mode);
   const token: string = useSelector((x: RootState) => x.user.token);
@@ -146,7 +147,11 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         </div>
       </aside>
 
-      <div className="p-4 sm:ml-64">{children}</div>
+      <div className="p-4 sm:ml-64">
+        <SearchBar />
+
+        {children}
+      </div>
     </>
   );
 };
