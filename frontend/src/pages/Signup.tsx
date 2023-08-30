@@ -2,12 +2,24 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { useCreateUserMutation } from "../store/API/UserAuthAPI";
+import { useNavigate } from "react-router-dom";
+
+interface IUserData {
+  email: string;
+  password: string;
+}
 
 const Signup = () => {
-  const [data, setData] = useState({
+  const initialState: IUserData = {
     email: "",
     password: "",
-  });
+  };
+
+  const navigate = useNavigate();
+  const [data, setData] = useState(initialState);
+
+  const [createUser] = useCreateUserMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -15,8 +27,14 @@ const Signup = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(data);
-    toast.success("Login success");
+    await toast
+      .promise(createUser(data).unwrap(), {
+        pending: "Creating user...",
+        success: "User created successfully",
+        error: "Error creating user",
+      })
+      .then(() => setData(initialState))
+      .then(() => navigate("/login"));
   };
   return (
     <section className="">
@@ -34,6 +52,7 @@ const Signup = () => {
                 placeholder="joy@gmail.com"
                 required
                 type="email"
+                value={data.email}
               />
               <InputField
                 label="Your Password"
@@ -42,6 +61,7 @@ const Signup = () => {
                 placeholder="********"
                 required
                 type="password"
+                value={data.password}
               />
               <button
                 type="submit"
