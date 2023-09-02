@@ -20,6 +20,10 @@ const EventCard: FC<IEventCardProps> = ({
   title,
   _id,
 }) => {
+  // Truncate the description to 60 characters
+  const shortDescription =
+    description.length > 60 ? description.slice(0, 60) + "..." : description;
+
   return (
     <Link
       to={`/events/${_id}`}
@@ -46,7 +50,7 @@ const EventCard: FC<IEventCardProps> = ({
           {dayjs(date).format("dddd, MMMM D, YYYY")}
         </p>
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          {description}
+          {shortDescription}
         </p>
         <BookmarkIcon className="h-6 ms-auto cursor-pointer" />
       </div>

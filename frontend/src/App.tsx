@@ -9,9 +9,9 @@ import {
   Events,
   Profile,
   EventDetailsPage,
-} from "./pages";
+} from "./Pages";
 import Sidebar from "./components/Sidebar/Sidebar";
-import ProtectedRoutes from "./pages/utils/ProtectedRoutes";
+import ProtectedRoutes from "./Pages/utils/ProtectetRoutes";
 
 const App = () => {
   return (

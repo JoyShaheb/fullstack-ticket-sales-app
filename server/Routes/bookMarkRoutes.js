@@ -1,8 +1,8 @@
 import express from "express";
 import {
-  saveToBookMark,
-  getAllBookMarks,
-} from "../Controllers/bookMarkController.js";
+    saveToBookMark,
+    getAllBookMarks,
+} from "../Controlers/bookMarkController.js";
 
 export const BookMarkRoutes = express.Router();
 

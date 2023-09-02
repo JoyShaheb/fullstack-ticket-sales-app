@@ -24,6 +24,33 @@ export const EventsAPI = createApi({
       }),
       invalidatesTags: ["Events"],
     }),
+    updateEvent: builder.mutation({
+      query: (body) => ({
+        url: `/update-event/${body.id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["Events"],
+    }),
+    getMultipleEvents: builder.mutation({
+      query: (body) => ({
+        url: "/multiple-events",
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["Events"],
+    }),
+    deleteEvent: builder.mutation({
+      query: (id) => ({
+        url: `/delete-event/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Events"],
+    }),
+    searchEvents: builder.query({
+      query: (searchTerm) => `/search-events?search=${searchTerm}`,
+      providesTags: ["Events"],
+    }),
   }),
 });
 
@@ -31,4 +58,8 @@ export const {
   useGetAllEventsQuery,
   useCreateEventMutation,
   useGetOneEventQuery,
+  useUpdateEventMutation,
+  useGetMultipleEventsMutation,
+  useDeleteEventMutation,
+  useSearchEventsQuery,
 } = EventsAPI;

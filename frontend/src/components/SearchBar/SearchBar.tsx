@@ -32,7 +32,7 @@ const SearchBar = () => {
             type="search"
             id="default-search"
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search Mockups, Logos..."
+            placeholder="Search for concerts or comedies..."
           />
           <button
             type="button"
@@ -62,17 +62,18 @@ const SearchBar = () => {
               <span className="sr-only">Close modal</span>
             </button>
             <div className="px-6 py-6 lg:px-8">
-              <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+              <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white text-center">
                 Search for Events
               </h3>
               <form className="space-y-6" onSubmit={handleSubmit}>
                 <InputField
-                  label="Search"
+                  label=""
                   name="search"
-                  placeholder="Concerts, Sports, etc."
+                  placeholder="Search for concerts or comedies..."
                   type="text"
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
+                  required={false}
                 />
                 <button
                   type="submit"

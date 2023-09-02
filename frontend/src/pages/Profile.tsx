@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { gradientTextStyles } from "../components/Text/TextStyles";
 import InputField from "../components/Form/InputField";
-import { useUpdateUserMutation } from "../store/API/UserAuthAPI";
+import { useUpdateUserMutation } from "../store/API/UserAuthApi";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { loginSuccess } from "../store/Slices/userSlice";
@@ -48,6 +48,7 @@ const Profile = () => {
           value={userData?.firstName}
           type="text"
           onChange={handleChange}
+          required={false}
         />
         <InputField
           label="Last Name"
@@ -56,6 +57,34 @@ const Profile = () => {
           value={userData?.lastName}
           type="text"
           onChange={handleChange}
+          required={false}
+        />
+        <InputField
+          label="Address"
+          placeholder="Someone"
+          name="address"
+          value={userData?.address}
+          type="text"
+          onChange={handleChange}
+          required={false}
+        />
+        <InputField
+          label="Phone Number"
+          placeholder="123456789"
+          name="phoneNumber"
+          value={userData?.phoneNumber}
+          type="text"
+          onChange={handleChange}
+          required={false}
+        />
+        <InputField
+          label="Email"
+          placeholder="test@gmail.com"
+          name="email"
+          value={userData?.email}
+          type="text"
+          onChange={handleChange}
+          required={false}
         />
         <div className="flex justify-center mt-5">
           <button

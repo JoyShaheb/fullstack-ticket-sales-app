@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useLoginUserMutation } from "../store/API/UserAuthAPI";
+import { useLoginUserMutation } from "../store/API/UserAuthApi";
 import { useNavigate } from "react-router-dom";
 import { loginSuccess } from "../store/Slices/userSlice";
 import { useDispatch } from "react-redux";
@@ -53,10 +53,10 @@ const Login = () => {
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <InputField
-                label="Your Email"
+                label="Enter Your Email"
                 onChange={handleChange}
                 name="email"
-                placeholder="joy@gmail.com"
+                placeholder="youremail@gmail.com"
                 required
                 type="email"
                 value={data.email}

@@ -1,5 +1,7 @@
+import React from "react";
+
 const ErrorPage = () => {
-  return <div>This is the errror page</div>;
+  return <div>Hi my name is Karolina</div>;
 };
 
 export default ErrorPage;

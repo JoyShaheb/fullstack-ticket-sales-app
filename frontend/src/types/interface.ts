@@ -4,5 +4,6 @@ export interface IEventData {
   image: string;
   location: string;
   title: string;
+  price: number;
   _id: string;
 }

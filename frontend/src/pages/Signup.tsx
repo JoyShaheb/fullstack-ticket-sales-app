@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useCreateUserMutation } from "../store/API/UserAuthAPI";
+import { useCreateUserMutation } from "../store/API/UserAuthApi";
 import { useNavigate } from "react-router-dom";
 
 interface IUserData {

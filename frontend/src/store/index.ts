@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { systemSlice } from "./Slices/systemSlice";
-import { UserAuthAPI } from "./API/UserAuthAPI";
+import { UserAuthAPI } from "./API/UserAuthApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { userSlice } from "./Slices/userSlice";
 import { EventsAPI } from "./API/EventsAPI";
@@ -27,7 +27,7 @@ export const store = configureStore({
     [EventsAPI.reducerPath]: EventsAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(EventsAPI.middleware),
+    getDefaultMiddleware().concat(EventsAPI.middleware, UserAuthAPI.middleware),
 });
 
 export const persistedStore = persistStore(store);

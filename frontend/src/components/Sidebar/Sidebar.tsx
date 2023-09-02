@@ -9,10 +9,11 @@ import {
   MoonIcon,
   CalendarDaysIcon,
   UserCircleIcon,
-  XMarkIcon,
   ArrowRightOnRectangleIcon,
+  SunIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
-import NavLink from "./NavLink";
+import NavLink from "./Navlink";
 import BasicSwitch from "../Switch/BasicSwitch";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
@@ -24,21 +25,21 @@ import SearchBar from "../SearchBar/SearchBar";
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const mode: string = useSelector((x: RootState) => x.system.mode);
   const token: string = useSelector((x: RootState) => x.user.token);
   const iconStyles =
     "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white";
 
+  const isDarkMode = mode === ThemeTypesEnum.DARK;
+
   useEffect(() => {
-    document.documentElement.classList.toggle(
-      ThemeTypesEnum.DARK,
-      mode === ThemeTypesEnum.DARK
-    );
-  }, [mode]);
+    document.documentElement.classList.toggle(ThemeTypesEnum.DARK, isDarkMode);
+  }, [isDarkMode]);
+
   return (
-    <>
+    <div>
       <button
         data-drawer-target="default-sidebar"
         data-drawer-toggle="default-sidebar"
@@ -47,7 +48,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`}
       >
-        <Bars3Icon className="w-6" strokeWidth={2} />
+        <Bars3Icon className="w-6 h-6" strokeWidth={2} />
       </button>
 
       <aside
@@ -130,13 +131,17 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                 />
               </>
             )}
-
-            <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  group">
-              <MoonIcon className={iconStyles} />
-              <span className="flex-1 ml-3 whitespace-nowrap">Dark Mode</span>
+            <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white :bg-gray-700 group">
+              {isDarkMode ? (
+                <MoonIcon className={iconStyles} />
+              ) : (
+                <SunIcon className={iconStyles} /> // Use SunIcon for light mode
+              )}
+              <span className="flex-1 ml-3 whitespace-nowrap">
+                {isDarkMode ? "Dark Mode" : "Light Mode"}
+              </span>
               <BasicSwitch
-                checked={mode === ThemeTypesEnum.DARK}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   e.target.checked
                     ? dispatch(themeSwitch(ThemeTypesEnum.DARK))
                     : dispatch(themeSwitch(ThemeTypesEnum.LIGHT))
@@ -146,13 +151,11 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           </ul>
         </div>
       </aside>
-
       <div className="p-4 sm:ml-64">
         <SearchBar />
-
         {children}
       </div>
-    </>
+    </div>
   );
 };
 
