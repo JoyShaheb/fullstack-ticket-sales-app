@@ -39,16 +39,15 @@ const EventCard: FC<IEventCardProps> = ({
         alt={title}
       />
       <div className="p-5">
-        <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-          {location}
-        </span>
-
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {title}
         </h5>
         <p className="mb-2 text-gray-400 text-sm">
           {dayjs(date).format("dddd, MMMM D, YYYY")}
         </p>
+        <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 my-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+          {location}
+        </span>
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
           {shortDescription}
         </p>

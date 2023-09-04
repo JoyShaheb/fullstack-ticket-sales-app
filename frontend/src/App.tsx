@@ -9,6 +9,8 @@ import {
   Events,
   Profile,
   EventDetailsPage,
+  MusicalConcerts,
+  StandUpComedies
 } from "./Pages";
 import Sidebar from "./components/Sidebar/Sidebar";
 import ProtectedRoutes from "./Pages/utils/ProtectetRoutes";
@@ -20,6 +22,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/musical-concerts" element={<MusicalConcerts />} />
+          <Route path="/stand-up-comedies" element={<StandUpComedies />} />
           <Route path="/events/:id" element={<EventDetailsPage />} />
           <Route path="/bookmark" element={<BookMark />} />
           <Route path="/purchase-history" element={<PurchaseHistory />} />

@@ -8,8 +8,12 @@ import Events from "./Events";
 import ForgotPassword from "./ForgotPassword";
 import Profile from "./Profile";
 import EventDetailsPage from "./EventDetailsPage";
+import MusicalConcerts from "./MusicalConcerts";
+import StandUpComedies from "./StandUpComedies";
 
 export {
+  MusicalConcerts,
+  StandUpComedies,
   ErrorPage,
   Home,
   Login,

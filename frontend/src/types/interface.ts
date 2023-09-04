@@ -6,4 +6,5 @@ export interface IEventData {
   title: string;
   price: number;
   _id: string;
+  type: string;
 }
