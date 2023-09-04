@@ -27,26 +27,16 @@ export const getOneEvent = async (req, res) => {
 
 export const createEvent = async (req, res) => {
   try {
-    const { token } = req.cookies;
-
-    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
-      if (err) {
-        return res.status(400).json({ message: "Invalid credentials" });
-      }
-      if (decodedToken.role !== "admin") {
-        return res
-          .status(400)
-          .json({
-            message:
-              "You are not authorized, please login as a Admin to create events",
-          });
-      }
-
-      const newEvent = await EventModel.create({
-        ...req.body,
+    if (req.userRole !== "admin") {
+      return res.status(400).json({
+        message:
+          "You are not authorized, please login as a Admin to create events",
       });
-      res.status(200).json({ message: "Event created successfully", newEvent });
+    }
+    const newEvent = await EventModel.create({
+      ...req.body,
     });
+    res.status(200).json({ message: "Event created successfully", newEvent });
   } catch (err) {
     res.status(500).json({ message: "something went wrong", err });
   }

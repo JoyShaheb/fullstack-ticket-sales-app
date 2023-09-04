@@ -15,8 +15,8 @@ interface IUserData {
 const Login = () => {
   const dispatch = useDispatch();
   const initialState: IUserData = {
-    email: "",
-    password: "",
+    email: "joy@gmail.com",
+    password: "123abc",
   };
 
   const navigate = useNavigate();
