@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import dayjs from "dayjs";
-import { BookmarkIcon } from "@heroicons/react/24/solid";
+import { BookmarkIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon as BookmarkIconSolid } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
 interface IEventCardProps {
@@ -10,6 +11,9 @@ interface IEventCardProps {
   date: Date;
   location: string;
   _id: string;
+  saved?: boolean;
+  saveAnEventToBookMark: ({ eventID }: { eventID: string }) => void;
+  removeAnEventFromBookmark?: ({ eventID }: { eventID: string }) => void;
 }
 
 const EventCard: FC<IEventCardProps> = ({
@@ -19,7 +23,23 @@ const EventCard: FC<IEventCardProps> = ({
   location,
   title,
   _id,
+  saved,
+  saveAnEventToBookMark,
+  removeAnEventFromBookmark,
 }) => {
+  const [isSaved, setIsSaved] = useState(saved || false);
+
+  const handleBookmarkClick = (
+    e: React.MouseEvent<SVGSVGElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (isSaved) {
+      removeAnEventFromBookmark && removeAnEventFromBookmark({ eventID: _id });
+    } else {
+      saveAnEventToBookMark({ eventID: _id });
+    }
+    setIsSaved(!isSaved);
+  };
   return (
     <Link
       to={`/events/${_id}`}
@@ -48,7 +68,17 @@ const EventCard: FC<IEventCardProps> = ({
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
           {description}
         </p>
-        <BookmarkIcon className="h-6 ms-auto cursor-pointer" />
+        {isSaved ? (
+          <BookmarkIconSolid
+            onClick={handleBookmarkClick}
+            className="h-6 ms-auto cursor-pointer"
+          />
+        ) : (
+          <BookmarkIcon
+            onClick={handleBookmarkClick}
+            className="h-6 ms-auto cursor-pointer"
+          />
+        )}
       </div>
     </Link>
   );
