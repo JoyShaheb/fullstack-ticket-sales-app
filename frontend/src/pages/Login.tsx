@@ -6,6 +6,7 @@ import { useLoginUserMutation } from "../store/API/UserAuthApi";
 import { useNavigate } from "react-router-dom";
 import { loginSuccess } from "../store/Slices/userSlice";
 import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
 
 interface IUserData {
   email: string;
@@ -15,8 +16,8 @@ interface IUserData {
 const Login = () => {
   const dispatch = useDispatch();
   const initialState: IUserData = {
-    email: "",
-    password: "",
+    email: "joy100@gmail.com",
+    password: "123abc",
   };
 
   const navigate = useNavigate();
@@ -38,6 +39,9 @@ const Login = () => {
       })
       .then(async (res) => {
         console.log(res?.userData);
+        Cookies.set("token", res?.userData?.token, {
+          expires: 90,
+        });
         dispatch(loginSuccess(res?.userData));
       })
       .then(() => setData(initialState))

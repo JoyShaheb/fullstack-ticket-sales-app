@@ -2,17 +2,9 @@ import { FC } from "react";
 import dayjs from "dayjs";
 import { BookmarkIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
+import { IEventData } from "../../types/interface";
 
-interface IEventCardProps {
-  title: string;
-  description: string;
-  image: string;
-  date: Date;
-  location: string;
-  _id: string;
-}
-
-const EventCard: FC<IEventCardProps> = ({
+const EventCard: FC<IEventData> = ({
   date,
   description,
   image,

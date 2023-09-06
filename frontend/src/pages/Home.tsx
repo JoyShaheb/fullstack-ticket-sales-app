@@ -5,16 +5,14 @@ import { useCreateEventMutation } from "../store/API/EventsAPI";
 import { useNavigate } from "react-router-dom";
 import { IEventData } from "../types/interface";
 
-
 const Signup = () => {
   const initialState: IEventData = {
-    date: new Date,
+    date: new Date(),
     description: "",
     image: "",
     location: "",
     title: "",
     price: 0,
-    _id: "",
     type: "",
   };
 
@@ -23,7 +21,9 @@ const Signup = () => {
 
   const [CreateEvent] = useCreateEventMutation();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
@@ -36,8 +36,7 @@ const Signup = () => {
         error: "Error creating event",
       })
       .then(() => setData(initialState))
-      .then(() => navigate("/get-all-events"));
-
+      .then(() => navigate("/events"));
   };
   return (
     <section className="">
@@ -71,8 +70,8 @@ const Signup = () => {
                 onChange={handleChange}
                 name="image"
                 placeholder="Enter Event Name here..."
-                required
-                type="image"
+                // required
+                type="file"
                 value={data.image}
               />
               <InputField
@@ -100,12 +99,18 @@ const Signup = () => {
                 placeholder="Event date"
                 required
                 type="date"
-                value={data.date ? new Date(data.date).toISOString().split('T')[0] : ''}
+                value={
+                  data.date
+                    ? new Date(data.date).toISOString().split("T")[0]
+                    : ""
+                }
               />
               <label htmlFor="eventType">Event Type</label>
               <select
                 id="eventType"
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange(e)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  handleChange(e)
+                }
                 name="type"
                 required
                 value={data.type}
