@@ -14,6 +14,8 @@ import {
 } from "./Pages";
 import Sidebar from "./components/Sidebar/Sidebar";
 import ProtectedRoutes from "./Pages/utils/ProtectetRoutes";
+// import EditEventModal from "./components/EditModal/EditEventModal";
+import EditEventForm from "./Pages/EditEventForm";
 
 const App = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
           <Route path="/purchase-history" element={<PurchaseHistory />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />
+            <Route path="/update-event/:id" element={<EditEventForm />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

@@ -18,7 +18,6 @@ const MusicalConcerts = () => {
 
     const sortedConcerts = sortByDate(concerts);
 
-
     if (isLoading || isFetching) {
         return <div>Loading events please wait...</div>;
     }
@@ -28,12 +27,12 @@ const MusicalConcerts = () => {
     }
 
     return (
-        <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3 justify-center">
             {sortedConcerts.map((item: IEventData) => (
                 <EventCard key={item._id} {...item} />
             ))}
         </div>
-    )
-}
+    );
+};
 
-export default MusicalConcerts
+export default MusicalConcerts;

@@ -27,48 +27,45 @@ export const getOneEvent = async (req, res) => {
 
 export const createEvent = async (req, res) => {
     try {
-        const { token } = req.cookies;
-
-        jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
-            if (err) {
-                return res.status(400).json({ message: "Invalid credentials" });
-            }
-            if (decodedToken.role !== "admin") {
-                return res
-                    .status(400)
-                    .json({
-                        message:
-                            "You are not authorized, please login as a Admin to create events",
-                    });
-            }
-
-            const newEvent = await EventModel.create({
-                ...req.body,
+        if (req.userRole !== "admin") {
+            return res.status(400).json({
+                message:
+                    "You are not authorized, please login as a Admin to create events",
             });
-            res.status(200).json({ message: "Event created successfully", newEvent });
+        }
+        const newEvent = await EventModel.create({
+            ...req.body,
         });
+        res.status(200).json({ message: "Event created successfully", newEvent });
     } catch (err) {
         res.status(500).json({ message: "something went wrong", err });
     }
 };
 
-
 export const updateEvent = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { token } = req.cookies;
+        if (req.userRole !== "admin") {
+            return res.status(400).json({
+                message:
+                    "You are not authorized, please log in as an Admin to update events",
+            });
+        }
 
-        jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
-            if (err) {
-                return res.status(400).json({ message: "Invalid credentials" });
-            }
-            if (decodedToken.role !== "admin") {
-                return res.status(400).json({
-                    message: "You are not authorized to update events. Please log in as an admin.",
-                });
-            }
+        const {
+            title,
+            description,
+            date,
+            location,
+            image,
+            price,
+            type,
+        } = req.body;
 
-            const {
+        const { id } = req.params; // Assuming you're passing the event ID in the request parameters
+
+        const updatedEvent = await EventModel.findByIdAndUpdate(
+            id,
+            {
                 title,
                 description,
                 date,
@@ -76,62 +73,45 @@ export const updateEvent = async (req, res) => {
                 image,
                 price,
                 type
-            } = req.body;
+            },
+            { new: true }
+        );
 
-            const updatedEvent = await EventModel.findByIdAndUpdate(
-                id,
-                {
-                    title,
-                    description,
-                    date,
-                    location,
-                    image,
-                    price,
-                    type
-                },
-                { new: true }
-            );
+        if (!updatedEvent) {
+            return res.status(404).json({ message: "Event not found" });
+        }
 
-            if (!updatedEvent) {
-                return res.status(404).json({ message: "Event not found" });
-            }
-
-            res.json({ message: "Successfully updated Event", data: updatedEvent });
-        });
+        res.json({ message: "Successfully updated Event", data: updatedEvent });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Server error" });
     }
 };
+
 
 export const deleteEvent = async (req, res) => {
     try {
+        if (req.userRole !== "admin") {
+            return res.status(400).json({
+                message: "You are not authorized, please login as an Admin to delete events",
+            });
+        }
+
         const { id } = req.params;
-        const { token } = req.cookies;
 
-        jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
-            if (err) {
-                return res.status(400).json({ message: "Invalid credentials" });
-            }
-            if (decodedToken.role !== "admin") {
-                return res.status(400).json({
-                    message: "You are not authorized to delete events. Please log in as an admin.",
-                });
-            }
+        const deletedEvent = await EventModel.findByIdAndRemove(id);
 
-            const deletedEvent = await EventModel.findByIdAndRemove(id);
+        if (!deletedEvent) {
+            return res.status(404).json({ message: "Event not found" });
+        }
 
-            if (!deletedEvent) {
-                return res.status(404).json({ message: "Event not found" });
-            }
-
-            res.json({ message: "Event deleted successfully" });
-        });
+        res.json({ message: "Event deleted successfully" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Server error" });
     }
 };
+
 
 
 export const searchEvent = async (req, res) => {

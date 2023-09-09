@@ -5,16 +5,14 @@ import { useCreateEventMutation } from "../store/API/EventsAPI";
 import { useNavigate } from "react-router-dom";
 import { IEventData } from "../types/interface";
 
-
-const Signup = () => {
+const Home = () => {
   const initialState: IEventData = {
-    date: new Date,
+    date: new Date(),
     description: "",
     image: "",
     location: "",
     title: "",
     price: 0,
-    _id: "",
     type: "",
   };
 
@@ -23,7 +21,10 @@ const Signup = () => {
 
   const [CreateEvent] = useCreateEventMutation();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    console.log("Selected value:", e.target.value);
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
@@ -36,8 +37,7 @@ const Signup = () => {
         error: "Error creating event",
       })
       .then(() => setData(initialState))
-      .then(() => navigate("/get-all-events"));
-
+      .then(() => navigate("/events"));
   };
   return (
     <section className="">
@@ -71,8 +71,8 @@ const Signup = () => {
                 onChange={handleChange}
                 name="image"
                 placeholder="Enter Event Name here..."
-                required
-                type="image"
+                required={false}
+                type="file"
                 value={data.image}
               />
               <InputField
@@ -100,7 +100,11 @@ const Signup = () => {
                 placeholder="Event date"
                 required
                 type="date"
-                value={data.date ? new Date(data.date).toISOString().split('T')[0] : ''}
+                value={
+                  data.date
+                    ? new Date(data.date).toISOString().split("T")[0]
+                    : ""
+                }
               />
               <label htmlFor="eventType">Event Type</label>
               <select
@@ -109,11 +113,11 @@ const Signup = () => {
                 name="type"
                 required
                 value={data.type}
+                className="text-black ml-3" // Apply the text-black class here
               >
                 <option value="concert">Concert</option>
                 <option value="comedy">Comedy</option>
               </select>
-
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -128,4 +132,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Home;

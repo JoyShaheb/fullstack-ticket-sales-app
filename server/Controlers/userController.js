@@ -44,7 +44,7 @@ export const loginUser = async (req, res) => {
             {
                 email: findUser.email,
                 userID: findUser._id,
-                role: findUser.userRole
+                userRole: findUser.userRole,
             },
             process.env.JWT_SECRET_KEY,
             {
@@ -58,20 +58,14 @@ export const loginUser = async (req, res) => {
             maxAge: 90 * 24 * 60 * 60 * 1000, // 90 days in milliseconds
         });
 
+        // Exclude the 'password' property
+        findUser.password = undefined;
+
         return res.status(200).json({
             message: "User logged in successfully",
             userData: {
                 token,
-                // Exclude the 'password' property
-                email: findUser.email,
-                id: findUser._id,
-                phoneNumber: findUser.phoneNumber,
-                address: findUser.address,
-                firstName: findUser.firstName,
-                lastName: findUser.lastName,
-                profilePicture: findUser.profilePicture,
-                address: findUser.address,
-                userRole: findUser.userRole,
+                ...findUser._doc,
             },
         });
     } catch (err) {

@@ -27,12 +27,12 @@ const StandUpComedies = () => {
     }
 
     return (
-        <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3 justify-center">
             {sortedComedies.map((item: IEventData) => (
                 <EventCard key={item._id} {...item} />
             ))}
         </div>
-    )
-}
+    );
+};
 
-export default StandUpComedies
+export default StandUpComedies;

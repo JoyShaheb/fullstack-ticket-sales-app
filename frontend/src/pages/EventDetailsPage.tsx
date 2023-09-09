@@ -1,25 +1,77 @@
-import { useState } from "react";
+import { useState, FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useGetOneEventQuery } from "../store/API/EventsAPI";
 import { gradientTextStyles } from "../components/Text/TextStyles";
+import { useGetAllBookMarksQuery, useRemoveEventFromBookMarkMutation, useSaveToBookMarkMutation } from "../store/API/BookMarkAPI"
 import dayjs from "dayjs";
 import {
   CalendarDaysIcon,
   PlusIcon,
-  BookmarkIcon,
+  BookmarkIcon as BookmarkIconSolid,
   MinusIcon,
 } from "@heroicons/react/24/solid";
+import { BookmarkIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 
-const EventDetailsPage = () => {
+interface EventDetailsPageProps {
+  saved: boolean;
+  _id: string;
+  saveAnEventToBookMark: ({ eventID }: { eventID: string }) => void;
+  removeAnEventFromBookmark: ({ eventID }: { eventID: string }) => void;
+}
+
+const EventDetailsPage: FC<EventDetailsPageProps> = ({
+  saved,
+}) => {
   const [ticketAmount, setTicketAmount] = useState(0);
   const params = useParams<{ id: string }>();
   const eventId = params.id;
 
   const { data, isLoading } = useGetOneEventQuery(eventId as string);
 
-  console.log(data);
+  const { data: bookmarksData, isLoading: isBookMarksLoading } =
+    useGetAllBookMarksQuery(null);
+  console.log(bookmarksData?.findUserBookMarks?.bookmarks);
+  const [saveToBookMark] = useSaveToBookMarkMutation();
+  const [removeEventFromBookMark] = useRemoveEventFromBookMarkMutation();
 
-  if (isLoading) {
+  useEffect(() => {
+    // Set the initial saved state when the component mounts
+    setIsSaved(saved);
+  }, [saved]);
+
+  const saveAnEventToBookMark = async ({ eventID }: { eventID: string }) => {
+    await toast.promise(saveToBookMark({ eventID }).unwrap(), {
+      pending: "Saving event to bookmark...",
+      success: "Event saved to bookmark",
+      error: "Failed to save event to bookmark",
+    });
+  };
+
+  const removeAnEventFromBookmark = async ({
+    eventID,
+  }: {
+    eventID: string;
+  }) => {
+    await toast.promise(removeEventFromBookMark({ eventID }).unwrap(), {
+      pending: "Removing event from bookmark...",
+      success: "Event removed from bookmark",
+      error: "Failed to remove event from bookmark",
+    });
+  };
+
+  const [isSaved, setIsSaved] = useState(saved); // Initialize directly with the saved prop
+
+  const handleBookmarkClick = () => {
+    if (isSaved) {
+      removeAnEventFromBookmark({ eventID: data._id });
+    } else {
+      saveAnEventToBookMark({ eventID: data._id });
+    }
+    setIsSaved(!isSaved);
+  };
+
+  if (isLoading || isBookMarksLoading) {
     return <div>Loading, please wait...</div>;
   }
 
@@ -45,7 +97,17 @@ const EventDetailsPage = () => {
           type="button"
           className="flex py-2 px-2 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         >
-          <BookmarkIcon className="h-6" />
+          {isSaved ? (
+            <BookmarkIconSolid
+              onClick={handleBookmarkClick}
+              className="h-6 cursor-pointer"
+            />
+          ) : (
+            <BookmarkIcon
+              onClick={handleBookmarkClick}
+              className="h-6 cursor-pointer"
+            />
+          )}
         </button>
       </div>
 

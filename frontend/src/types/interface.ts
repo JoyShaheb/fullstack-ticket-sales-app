@@ -5,6 +5,7 @@ export interface IEventData {
   location: string;
   title: string;
   price: number;
-  _id: string;
   type: string;
+  _id?: string;
+  id?: string
 }

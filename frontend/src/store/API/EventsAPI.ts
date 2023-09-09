@@ -1,15 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IEventData } from "../../types/interface";
+import Cookies from "js-cookie";
 
 export const EventsAPI = createApi({
   reducerPath: "EventsAPI",
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_APP_LOCAL_API_BASE_URL}/api/events`,
+    prepareHeaders: (headers) => {
+      const token = Cookies.get("token");
+      if (token) {
+        headers.set("authorization", `${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ["Events"],
   endpoints: (builder) => ({
     getAllEvents: builder.query<IEventData[], null>({
-      query: () => "/get-all-events",
+      query: () => "/events",
       providesTags: ["Events"],
     }),
     getOneEvent: builder.query<IEventData, string>({
@@ -26,7 +34,7 @@ export const EventsAPI = createApi({
     }),
     updateEvent: builder.mutation({
       query: (body) => ({
-        url: `/update-event/${body.id}`,
+        url: `/update-event/${body._id}`,
         method: "PUT",
         body,
       }),

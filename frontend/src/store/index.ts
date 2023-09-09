@@ -6,6 +6,7 @@ import { UserAuthAPI } from "./API/UserAuthApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { userSlice } from "./Slices/userSlice";
 import { EventsAPI } from "./API/EventsAPI";
+import { BookMarkAPI } from "./API/BookMarkAPI";
 
 const persistConfig = {
   key: "root",
@@ -25,9 +26,10 @@ export const store = configureStore({
     user: persistedUserReducer,
     [UserAuthAPI.reducerPath]: UserAuthAPI.reducer,
     [EventsAPI.reducerPath]: EventsAPI.reducer,
+    [BookMarkAPI.reducerPath]: BookMarkAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(EventsAPI.middleware, UserAuthAPI.middleware),
+    getDefaultMiddleware().concat(EventsAPI.middleware, UserAuthAPI.middleware, BookMarkAPI.middleware,),
 });
 
 export const persistedStore = persistStore(store);
