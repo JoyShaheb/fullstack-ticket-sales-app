@@ -12,6 +12,7 @@ import {
   ArrowRightOnRectangleIcon,
   SunIcon,
   XMarkIcon,
+  ShoppingCartIcon
 } from "@heroicons/react/24/solid";
 import NavLink from "./Navlink";
 import BasicSwitch from "../Switch/BasicSwitch";
@@ -101,6 +102,11 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                   to="/profile"
                   label="Profile"
                   icon={<UserCircleIcon className={iconStyles} />}
+                />
+                <NavLink
+                  to="/shopping-cart"
+                  label="Shopping Cart"
+                  icon={<ShoppingCartIcon className={iconStyles} />}
                 />
               </>
             )}

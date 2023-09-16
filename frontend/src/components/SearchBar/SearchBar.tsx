@@ -1,13 +1,25 @@
 import { useState } from "react";
 import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import InputField from "../Form/InputField";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { changeSearchTerm } from "../../store/Slices/SearchSlice";
 
 const SearchBar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>({
+    searchTerm: "",
+  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(changeSearchTerm(search));
+    navigate("/display-search-result")
+    setSearch({
+      searchTerm: "", // Clear the search term after submitting
+    });
     console.log(search);
   };
 
@@ -46,9 +58,8 @@ const SearchBar = () => {
         id="authentication-modal"
         tabIndex={-1}
         aria-hidden="true"
-        className={`fixed bg-opacity-80 bg-black flex items-center justify-center z-50 ${
-          !isOpen && "hidden"
-        } w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}
+        className={`fixed bg-opacity-80 bg-black flex items-center justify-center z-50 ${!isOpen && "hidden"
+          } w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}
       >
         <div className="relative w-full max-w-md max-h-full">
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -71,8 +82,11 @@ const SearchBar = () => {
                   name="search"
                   placeholder="Search for concerts or comedies..."
                   type="text"
-                  onChange={(e) => setSearch(e.target.value)}
-                  value={search}
+                  onChange={(e) => setSearch({
+                    ...search,
+                    searchTerm: e.target.value
+                  })}
+                  value={search.searchTerm}
                   required={false}
                 />
                 <button

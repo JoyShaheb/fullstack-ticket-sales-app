@@ -3,9 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const UserAuthAPI = createApi({
   reducerPath: "UserAuthAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${
-      import.meta.env.VITE_APP_LOCAL_API_BASE_URL
-    }/api/users/authenticate`,
+    baseUrl: `${import.meta.env.VITE_APP_LOCAL_API_BASE_URL
+      }/api/users/authenticate`,
   }),
   tagTypes: ["User", "UpdateUser"],
   endpoints: (builder) => ({
@@ -34,6 +33,10 @@ export const UserAuthAPI = createApi({
       }),
       invalidatesTags: ["UpdateUser"],
     }),
+    getUser: builder.query({
+      query: ({ id }) => `/get-one-user/:${id}`,
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -41,4 +44,5 @@ export const {
   useCreateUserMutation,
   useLoginUserMutation,
   useUpdateUserMutation,
+  useGetUserQuery,
 } = UserAuthAPI;

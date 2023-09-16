@@ -10,6 +10,7 @@ import { RootState } from "../store";
 const Profile = () => {
   const dispatch = useDispatch();
   const storeUserData = useSelector((state: RootState) => state.user);
+  console.log("storeUserData", storeUserData)
   const [userData, setUserData] = useState(storeUserData);
 
   const [updateUser] = useUpdateUserMutation();

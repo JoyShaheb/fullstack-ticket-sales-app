@@ -6,6 +6,7 @@ import { UserRouter } from "./Routes/UserRoute.js";
 import { EventRoutes } from "./Routes/eventRoutes.js";
 import cookieParser from "cookie-parser";
 import { BookMarkRoutes } from "./Routes/bookMarkRoutes.js";
+import { salesRoutes } from "./Routes/salesRoutes.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 5001;
@@ -26,6 +27,7 @@ app.use(
 app.use("/api/users/authenticate", UserRouter);
 app.use("/api/events", EventRoutes);
 app.use("/api/bookmarks", BookMarkRoutes);
+app.use("/api/sales", salesRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server started at port ${PORT}`);

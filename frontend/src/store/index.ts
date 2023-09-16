@@ -7,6 +7,9 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { userSlice } from "./Slices/userSlice";
 import { EventsAPI } from "./API/EventsAPI";
 import { BookMarkAPI } from "./API/BookMarkAPI";
+import { searchSlice } from "./Slices/SearchSlice";
+import { basketSlice } from "./Slices/basket";
+import { salesAPI } from "./API/SalesApi";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +22,10 @@ const persistedSystemReducer = persistReducer(
 );
 
 const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
+const persistedBasketReducer = persistReducer(
+  persistConfig,
+  basketSlice.reducer
+);
 
 export const store = configureStore({
   reducer: {
@@ -27,9 +34,16 @@ export const store = configureStore({
     [UserAuthAPI.reducerPath]: UserAuthAPI.reducer,
     [EventsAPI.reducerPath]: EventsAPI.reducer,
     [BookMarkAPI.reducerPath]: BookMarkAPI.reducer,
+    [salesAPI.reducerPath]: salesAPI.reducer,
+    SearchTerm: searchSlice.reducer,
+    Basket: persistedBasketReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(EventsAPI.middleware, UserAuthAPI.middleware, BookMarkAPI.middleware,),
+    getDefaultMiddleware().concat(
+      EventsAPI.middleware,
+      UserAuthAPI.middleware,
+      BookMarkAPI.middleware
+    ),
 });
 
 export const persistedStore = persistStore(store);

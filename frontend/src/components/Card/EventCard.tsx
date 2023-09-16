@@ -1,11 +1,12 @@
 import { FC, useState } from "react";
 import dayjs from "dayjs";
-import { BookmarkIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkIconSolid } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "../DeleteModal/DeleteIcon";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface IEventCardProps {
   date: Date;
@@ -35,6 +36,7 @@ const EventCard: FC<IEventCardProps> = ({
 }) => {
 
   const navigate = useNavigate();
+  const userRole: string = useSelector((x: RootState) => x.user.userRole)
 
   const [isSaved, setIsSaved] = useState(saved || false);
 
@@ -43,9 +45,9 @@ const EventCard: FC<IEventCardProps> = ({
   ) => {
     e.preventDefault();
     if (isSaved) {
-      removeAnEventFromBookmark && removeAnEventFromBookmark({ eventID: _id });
+      removeAnEventFromBookmark && removeAnEventFromBookmark({ eventID: _id as string });
     } else {
-      saveAnEventToBookMark({ eventID: _id });
+      saveAnEventToBookMark({ eventID: _id as string });
     }
     setIsSaved(!isSaved);
   };
@@ -97,18 +99,21 @@ const EventCard: FC<IEventCardProps> = ({
             />
           )}
         </div>
-        <button
-          onClick={() => navigate(`/update-event/${_id}`)}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          type="button"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-          </svg>
-        </button>
-        <button type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-          <DeleteIcon id={_id} />
-        </button>
+        {userRole === "admin" && (
+          <>
+            <button
+              onClick={() => navigate(`/update-event/${_id}`)}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              type="button"
+            >
+              <PencilIcon className="h-5" strokeWidth={2} />
+            </button>
+            <button type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+              <DeleteIcon id={_id} />
+            </button>
+          </>
+        )}
+
       </div>
 
     </div>
