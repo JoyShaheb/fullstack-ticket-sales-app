@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useLoginUserMutation } from "../store/API/UserAuthApi";
+import {
+  useEmailLoginMutation,
+  useGoogleSignupMutation,
+} from "../store/API/UserAuthAPI";
 import { useNavigate } from "react-router-dom";
-import { loginSuccess } from "../store/Slices/userSlice";
-import { useDispatch } from "react-redux";
-import Cookies from "js-cookie";
 
 interface IUserData {
   email: string;
@@ -14,7 +14,6 @@ interface IUserData {
 }
 
 const Login = () => {
-  const dispatch = useDispatch();
   const initialState: IUserData = {
     email: "",
     password: "",
@@ -23,7 +22,8 @@ const Login = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(initialState);
 
-  const [loginUser] = useLoginUserMutation();
+  const [emailLogin] = useEmailLoginMutation();
+  const [googleSignup] = useGoogleSignupMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -32,18 +32,25 @@ const Login = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await toast
-      .promise(loginUser(data).unwrap(), {
+      .promise(emailLogin(data).unwrap(), {
         pending: "Logging in...",
         success: "Login successful",
         error: "Login failed",
       })
-      .then(async (res) => {
-        console.log(res?.userData);
-        Cookies.set("token", res?.userData?.token, { expires: 90 });
-        dispatch(loginSuccess(res?.userData));
-      })
       .then(() => setData(initialState))
-      .then(() => navigate("/profile"));
+      .then(() => navigate("/profile"))
+      .catch((err) => toast.error(err));
+  };
+
+  const googleAuthenticate = async () => {
+    await toast
+      .promise(googleSignup(null).unwrap(), {
+        pending: "Signing in...",
+        success: "Signed in successfully",
+        error: "Error signing in",
+      })
+      .then(() => navigate("/profile"))
+      .catch((err) => toast.error(err));
   };
   return (
     <section className="">
@@ -53,6 +60,9 @@ const Login = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Login to account
             </h1>
+            <button className="border p-2" onClick={googleAuthenticate}>
+              google login
+            </button>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <InputField
                 label="Enter Your Email"

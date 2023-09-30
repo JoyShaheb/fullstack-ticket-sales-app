@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./config/firebase-config";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Home,
@@ -14,13 +17,30 @@ import {
   DisplaySearchResult,
   ShoppingCart,
   Checkout,
-} from "./Pages";
+  EditEventForm,
+} from "./pages";
 import Sidebar from "./components/Sidebar/Sidebar";
-import ProtectedRoutes from "./Pages/utils/ProtectetRoutes";
-// import EditEventModal from "./components/EditModal/EditEventModal";
-import EditEventForm from "./Pages/EditEventForm";
+import ProtectedRoutes from "./pages/utils/ProtectetRoutes";
+import Cookies from "js-cookie";
+import { loginSuccess, logoutSuccess } from "./store/Slices/userSlice";
+import { useDispatch } from "react-redux";
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        // @ts-ignore
+        Cookies.set("accessToken", user?.accessToken);
+        dispatch(loginSuccess({ userUid: uid }));
+      } else {
+        Cookies.remove("accessToken");
+        dispatch(logoutSuccess());
+      }
+    });
+  }, []);
+
   return (
     <BrowserRouter>
       <Sidebar>
@@ -34,7 +54,10 @@ const App = () => {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/bookmark" element={<BookMark />} />
           <Route path="/purchase-history" element={<PurchaseHistory />} />
-          <Route path="/display-search-result" element={<DisplaySearchResult />} />
+          <Route
+            path="/display-search-result"
+            element={<DisplaySearchResult />}
+          />
           <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/update-event/:id" element={<EditEventForm />} />

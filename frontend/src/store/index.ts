@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { systemSlice } from "./Slices/systemSlice";
-import { UserAuthAPI } from "./API/UserAuthApi";
+import { UserAuthAPI } from "./API/UserAuthAPI";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { userSlice } from "./Slices/userSlice";
 import { EventsAPI } from "./API/EventsAPI";

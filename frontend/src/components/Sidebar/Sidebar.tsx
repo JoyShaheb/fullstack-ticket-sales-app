@@ -12,16 +12,18 @@ import {
   ArrowRightOnRectangleIcon,
   SunIcon,
   XMarkIcon,
-  ShoppingCartIcon
+  ShoppingCartIcon,
 } from "@heroicons/react/24/solid";
-import NavLink from "./Navlink";
+import NavLink from "./NavLink";
 import BasicSwitch from "../Switch/BasicSwitch";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { themeSwitch, ThemeTypesEnum } from "../../store/Slices/systemSlice";
 import { gradientTextStyles } from "../Text/TextStyles";
-import { logoutSuccess } from "../../store/Slices/userSlice";
 import SearchBar from "../SearchBar/SearchBar";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebase-config";
+import { toast } from "react-toastify";
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const mode: string = useSelector((x: RootState) => x.system.mode);
-  const token: string = useSelector((x: RootState) => x.user.token);
+  const userUid: string = useSelector((x: RootState) => x.user.userUid);
   const iconStyles =
     "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white";
 
@@ -38,6 +40,12 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     document.documentElement.classList.toggle(ThemeTypesEnum.DARK, isDarkMode);
   }, [isDarkMode]);
+
+  const logoutFn = async () => {
+    await signOut(auth)
+      .then(() => toast.success("Logout Success!"))
+      .catch((err) => toast.error(err.message));
+  };
 
   return (
     <div>
@@ -54,8 +62,9 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
 
       <aside
         id="default-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${!isOpen && "-translate-x-full"
-          } sm:translate-x-0`}
+        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+          !isOpen && "-translate-x-full"
+        } sm:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
@@ -74,7 +83,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
             Ticket Sales
           </div>
           <ul className="space-y-2 font-medium">
-            {token && (
+            {userUid && (
               <NavLink
                 to="/"
                 label="Dashboard"
@@ -86,7 +95,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               label="Events"
               icon={<CalendarDaysIcon className={iconStyles} />}
             />
-            {token && (
+            {userUid && (
               <>
                 <NavLink
                   to="/bookmark"
@@ -111,18 +120,16 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               </>
             )}
 
-            {token && (
+            {userUid && (
               <NavLink
                 to="/login"
                 label="Signout"
                 icon={<ArrowRightOnRectangleIcon className={iconStyles} />}
-                onClick={() => {
-                  dispatch(logoutSuccess());
-                }}
+                onClick={() => logoutFn()}
               />
             )}
 
-            {!token && (
+            {!userUid && (
               <>
                 <NavLink
                   to="/login"
@@ -157,9 +164,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           </ul>
         </div>
       </aside>
-      <div className="p-4 sm:ml-64">
-        {children}
-      </div>
+      <div className="p-4 sm:ml-64">{children}</div>
     </div>
   );
 };

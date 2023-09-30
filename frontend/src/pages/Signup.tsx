@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useCreateUserMutation } from "../store/API/UserAuthApi";
+import {
+  useEmailSignupMutation,
+  useGoogleSignupMutation,
+} from "../store/API/UserAuthAPI";
 import { useNavigate } from "react-router-dom";
 
 interface IUserData {
@@ -19,7 +22,8 @@ const Signup = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(initialState);
 
-  const [createUser] = useCreateUserMutation();
+  const [emailSignup] = useEmailSignupMutation();
+  const [googleSignup] = useGoogleSignupMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -28,13 +32,25 @@ const Signup = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await toast
-      .promise(createUser(data).unwrap(), {
+      .promise(emailSignup(data).unwrap(), {
         pending: "Creating user...",
         success: "User created successfully",
         error: "Error creating user",
       })
       .then(() => setData(initialState))
-      .then(() => navigate("/login"));
+      .then(() => navigate("/profile"))
+      .catch((err) => toast.error(err));
+  };
+
+  const googleAuthenticate = async () => {
+    await toast
+      .promise(googleSignup(null).unwrap(), {
+        pending: "Signing in...",
+        success: "Signed in successfully",
+        error: "Error signing in",
+      })
+      .then(() => navigate("/profile"))
+      .catch((err) => toast.error(err));
   };
   return (
     <section className="">
@@ -44,6 +60,9 @@ const Signup = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign Up for a new account
             </h1>
+            <button className="border p-2" onClick={googleAuthenticate}>
+              google signup
+            </button>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <InputField
                 label="Your Email"
