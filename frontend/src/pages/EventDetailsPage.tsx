@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetOneEventQuery } from "../store/API/EventsAPI";
+// import { useGetOneEventQuery } from "../store/API/EventsAPI";
 import { gradientTextStyles } from "../components/Text/TextStyles";
 import {
   CalendarDaysIcon,
@@ -7,7 +7,7 @@ import {
   PlusIcon,
   MinusIcon,
 } from "@heroicons/react/24/solid";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import { useState } from "react";
 
 const EventDetailsPage = () => {
@@ -15,11 +15,11 @@ const EventDetailsPage = () => {
   const params = useParams<{ id: string }>();
   const eventId = params.id;
 
-  const { data, isLoading } = useGetOneEventQuery(eventId as string);
+  // const { data, isLoading } = useGetOneEventQuery(eventId as string);
 
-  if (isLoading) {
-    return <div>Loading, please wait...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading, please wait...</div>;
+  // }
 
   return (
     <div className="container mx-auto max-w-4xl">
@@ -28,14 +28,14 @@ const EventDetailsPage = () => {
           <h1
             className={`mb-1 text-4xl font-bold capitalize ${gradientTextStyles}`}
           >
-            {data?.title}
+            {/* {data?.title} */}
           </h1>
           <p className="flex gap-3 my-2">
             <CalendarDaysIcon className="h-6" />
-            {dayjs(data?.date).format("dddd, MMMM D, YYYY")}
+            {/* {dayjs(data?.date).format("dddd, MMMM D, YYYY")} */}
           </p>
           <span className="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-            {data?.location}
+            {/* {data?.location} */}
           </span>
         </div>
 
@@ -47,14 +47,14 @@ const EventDetailsPage = () => {
         </button>
       </div>
 
-      <img
+      {/* <img
         className="my-6 w-full object-contain object-top "
         src={data?.image}
         style={{
           borderRadius: "8px",
         }}
         alt=""
-      />
+      /> */}
 
       <div className="flex flex-col items-center justify-center">
         <div className="flex gap-3">
@@ -77,7 +77,7 @@ const EventDetailsPage = () => {
       </div>
 
       <h3 className="text-3xl my-4">Details ✨</h3>
-      <p className="my-4 text-slate-300">{data?.description}</p>
+      {/* <p className="my-4 text-slate-300">{data?.description}</p> */}
     </div>
   );
 };

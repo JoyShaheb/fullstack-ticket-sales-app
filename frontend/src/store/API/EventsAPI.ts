@@ -1,34 +1,49 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IEventData } from "../../types/interface";
+import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+// import { IEventData } from "../../types/interface";
+import { collection, getDocs } from "@firebase/firestore";
+import { db } from "../../config/firebase-config";
 
 export const EventsAPI = createApi({
   reducerPath: "EventsAPI",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_APP_LOCAL_API_BASE_URL}/api/events`,
-  }),
+  baseQuery: fakeBaseQuery(),
   tagTypes: ["Events"],
   endpoints: (builder) => ({
-    getAllEvents: builder.query<IEventData[], null>({
-      query: () => "/get-all-events",
+    getAllEvents: builder.query({
+      queryFn: async () => {
+        const querySnapshot = await getDocs(collection(db, "events"));
+        const moviesData = querySnapshot.docs.map((doc) => doc.data());
+        return { data: moviesData };
+        // try {
+        //   const querySnapshot = await getDocs(collection(db, "events"));
+        //   const eventsData = querySnapshot.docs.map((doc) => doc.data());
+        //   console.log("eventsData", eventsData);
+        //   return { data: eventsData };
+        // } catch (err) {
+        //   console.log("eventsData", (err as Error)?.message);
+        //   return {
+        //     error: (err as Error)?.message,
+        //   };
+        // }
+      },
       providesTags: ["Events"],
     }),
-    getOneEvent: builder.query<IEventData, string>({
-      query: (id) => `/get-one-event/${id}`,
-      providesTags: ["Events"],
-    }),
-    CreateEvent: builder.mutation({
-      query: (body) => ({
-        url: "/create-event",
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["Events"],
-    }),
+    // getOneEvent: builder.query<IEventData, string>({
+    //   query: (id) => `/get-one-event/${id}`,
+    //   providesTags: ["Events"],
+    // }),
+    // CreateEvent: builder.mutation({
+    //   query: (body) => ({
+    //     url: "/create-event",
+    //     method: "POST",
+    //     body,
+    //   }),
+    //   invalidatesTags: ["Events"],
+    // }),
   }),
 });
 
 export const {
   useGetAllEventsQuery,
-  useCreateEventMutation,
-  useGetOneEventQuery,
+  // useCreateEventMutation,
+  // useGetOneEventQuery,
 } = EventsAPI;
