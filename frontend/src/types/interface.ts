@@ -6,3 +6,8 @@ export interface IEventData {
   title: string;
   _id: string;
 }
+
+export interface IUserSignInData {
+  email: string;
+  password: string;
+}

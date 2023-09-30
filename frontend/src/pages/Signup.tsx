@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useCreateUserMutation } from "../store/API/UserAuthAPI";
+import {
+  useEmailSignupMutation,
+  useGoogleSignupMutation,
+} from "../store/API/UserAuthAPI";
 import { useNavigate } from "react-router-dom";
-
-interface IUserData {
-  email: string;
-  password: string;
-}
+import { IUserSignInData } from "../types/interface";
 
 const Signup = () => {
-  const initialState: IUserData = {
+  const initialState: IUserSignInData = {
     email: "",
     password: "",
   };
@@ -19,7 +18,8 @@ const Signup = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(initialState);
 
-  const [createUser] = useCreateUserMutation();
+  const [emailSignup] = useEmailSignupMutation();
+  const [googleSignup] = useGoogleSignupMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -28,14 +28,27 @@ const Signup = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await toast
-      .promise(createUser(data).unwrap(), {
+      .promise(emailSignup(data).unwrap(), {
         pending: "Creating user...",
         success: "User created successfully",
         error: "Error creating user",
       })
       .then(() => setData(initialState))
-      .then(() => navigate("/login"));
+      .then(() => navigate("/profile"))
+      .catch((err) => toast.error(err));
   };
+
+  const GoogleAuth = async () =>
+    await toast
+      .promise(googleSignup(null).unwrap(), {
+        pending: "Creating user...",
+        success: "Successfully created user!",
+        error: "Could not create user!",
+      })
+      .then((res) => console.log(res))
+      .then(() => navigate("/profile"))
+      .catch((err) => toast.error(err));
+
   return (
     <section className="">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -44,6 +57,9 @@ const Signup = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign Up for a new account
             </h1>
+            <button onClick={GoogleAuth} className="border p-2">
+              Google signup
+            </button>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <InputField
                 label="Your Email"

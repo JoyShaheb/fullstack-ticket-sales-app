@@ -18,8 +18,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { themeSwitch, ThemeTypesEnum } from "../../store/Slices/systemSlice";
 import { gradientTextStyles } from "../Text/TextStyles";
-import { logoutSuccess } from "../../store/Slices/userSlice";
 import SearchBar from "../SearchBar/SearchBar";
+import { signOut } from "@firebase/auth";
+import { auth } from "../../config/firebase-config";
+import { toast } from "react-toastify";
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
@@ -27,7 +29,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const mode: string = useSelector((x: RootState) => x.system.mode);
-  const token: string = useSelector((x: RootState) => x.user.token);
+  const userUid: string = useSelector((x: RootState) => x.user.userUid);
   const iconStyles =
     "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white";
 
@@ -37,6 +39,12 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
       mode === ThemeTypesEnum.DARK
     );
   }, [mode]);
+
+  const logoutFn = async () =>
+    await signOut(auth)
+      .then(() => toast.success("Logged out successfully"))
+      .catch((err) => toast.error(err.message));
+
   return (
     <>
       <button
@@ -73,7 +81,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
             Ticket Sales
           </div>
           <ul className="space-y-2 font-medium">
-            {token && (
+            {userUid && (
               <NavLink
                 to="/"
                 label="Dashboard"
@@ -85,7 +93,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               label="Events"
               icon={<CalendarDaysIcon className={iconStyles} />}
             />
-            {token && (
+            {userUid && (
               <>
                 <NavLink
                   to="/bookmark"
@@ -105,18 +113,16 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               </>
             )}
 
-            {token && (
+            {userUid && (
               <NavLink
                 to="/login"
                 label="Signout"
                 icon={<ArrowRightOnRectangleIcon className={iconStyles} />}
-                onClick={() => {
-                  dispatch(logoutSuccess());
-                }}
+                onClick={logoutFn}
               />
             )}
 
-            {!token && (
+            {!userUid && (
               <>
                 <NavLink
                   to="/login"

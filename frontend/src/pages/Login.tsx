@@ -2,20 +2,15 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useLoginUserMutation } from "../store/API/UserAuthAPI";
+import {
+  useEmailLoginMutation,
+  useGoogleSignupMutation,
+} from "../store/API/UserAuthAPI";
 import { useNavigate } from "react-router-dom";
-import { loginSuccess } from "../store/Slices/userSlice";
-import { useDispatch } from "react-redux";
-import Cookies from "js-cookie";
-
-interface IUserData {
-  email: string;
-  password: string;
-}
+import { IUserSignInData } from "../types/interface";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const initialState: IUserData = {
+  const initialState: IUserSignInData = {
     email: "joy@gmail.com",
     password: "123abc",
   };
@@ -23,28 +18,36 @@ const Login = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(initialState);
 
-  const [loginUser] = useLoginUserMutation();
+  const [emailLogin] = useEmailLoginMutation();
+  const [googleSignup] = useGoogleSignupMutation();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setData({ ...data, [e.target.name]: e.target.value });
-  };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await toast
-      .promise(loginUser(data).unwrap(), {
+      .promise(emailLogin(data).unwrap(), {
         pending: "Logging in...",
         success: "Login successful",
         error: "Login failed",
       })
-      .then(async (res) => {
-        console.log(res?.userData);
-        Cookies.set("token", res?.userData?.token, { expires: 90 });
-        dispatch(loginSuccess(res?.userData));
-      })
       .then(() => setData(initialState))
-      .then(() => navigate("/profile"));
+      .then(() => navigate("/profile"))
+      .catch((err) => console.log(err));
   };
+
+  const GoogleAuth = async () =>
+    await toast
+      .promise(googleSignup(null).unwrap(), {
+        pending: "Creating user...",
+        success: "Successfully created user!",
+        error: "Could not create user!",
+      })
+      .then((res) => console.log(res))
+      .then(() => navigate("/profile"))
+      .catch((err) => toast.error(err));
+
   return (
     <section className="">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -53,6 +56,9 @@ const Login = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Login to account
             </h1>
+            <button onClick={GoogleAuth} className="border p-2">
+              Google signup
+            </button>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <InputField
                 label="Your Email"
