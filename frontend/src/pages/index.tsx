@@ -7,6 +7,7 @@ import PurchaseHistory from "./PurchaseHistory";
 import Events from "./Events";
 import Profile from "./Profile";
 import EventDetailsPage from "./EventDetailsPage";
+import CreateEvent from "./CreateEvent";
 
 export {
   Home,
@@ -18,4 +19,5 @@ export {
   Events,
   Profile,
   EventDetailsPage,
+  CreateEvent,
 };

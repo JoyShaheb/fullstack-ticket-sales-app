@@ -11,6 +11,7 @@ import {
   UserCircleIcon,
   XMarkIcon,
   ArrowRightOnRectangleIcon,
+  PlusCircleIcon,
 } from "@heroicons/react/24/solid";
 import NavLink from "./NavLink";
 import BasicSwitch from "../Switch/BasicSwitch";
@@ -95,6 +96,11 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
             />
             {userUid && (
               <>
+                <NavLink
+                  to="/create-event"
+                  label="create"
+                  icon={<PlusCircleIcon className={iconStyles} />}
+                />
                 <NavLink
                   to="/bookmark"
                   label="Bookmark"
