@@ -29,7 +29,9 @@ export const store = configureStore({
     [BookMarkAPI.reducerPath]: BookMarkAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(
       EventsAPI.middleware,
       BookMarkAPI.middleware,
       UserAuthAPI.middleware
