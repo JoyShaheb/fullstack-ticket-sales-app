@@ -66,7 +66,7 @@ const Home = () => {
                 type="description"
                 value={data.description}
               />
-              <InputField
+              {/* <InputField
                 label="Event Image"
                 onChange={handleChange}
                 name="image"
@@ -74,7 +74,7 @@ const Home = () => {
                 required={false}
                 type="file"
                 value={data.image}
-              />
+              /> */}
               <InputField
                 label="Event location"
                 onChange={handleChange}
@@ -109,7 +109,9 @@ const Home = () => {
               <label htmlFor="eventType">Event Type</label>
               <select
                 id="eventType"
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange(e)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  handleChange(e)
+                }
                 name="type"
                 required
                 value={data.type}
