@@ -160,7 +160,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
       </aside>
 
       <div className="p-4 sm:ml-64">
-        <SearchBar />
+        {/* <SearchBar /> */}
 
         {children}
       </div>

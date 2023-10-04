@@ -13,17 +13,6 @@ export const EventsAPI = createApi({
         const querySnapshot = await getDocs(collection(db, "events"));
         const moviesData = querySnapshot.docs.map((doc) => doc.data());
         return { data: moviesData };
-        // try {
-        //   const querySnapshot = await getDocs(collection(db, "events"));
-        //   const eventsData = querySnapshot.docs.map((doc) => doc.data());
-        //   console.log("eventsData", eventsData);
-        //   return { data: eventsData };
-        // } catch (err) {
-        //   console.log("eventsData", (err as Error)?.message);
-        //   return {
-        //     error: (err as Error)?.message,
-        //   };
-        // }
       },
       providesTags: ["Events"],
     }),

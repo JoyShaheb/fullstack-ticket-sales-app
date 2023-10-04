@@ -1,10 +1,10 @@
 export interface IEventData {
-  date: Date;
+  id: string;
+  title: string;
   description: string;
   image: string;
+  date: Date | string;
   location: string;
-  title: string;
-  _id: string;
 }
 
 export interface IUserSignInData {
