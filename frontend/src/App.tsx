@@ -16,6 +16,8 @@ import {
   StandUpComedies,
   DisplaySearchResult,
   ShoppingCart,
+  ForgotPassword,
+  ResetPassword,
   Checkout,
   EditEventForm,
 } from "./pages";
@@ -64,6 +66,8 @@ const App = () => {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Sidebar>

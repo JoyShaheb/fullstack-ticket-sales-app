@@ -1,47 +1,50 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import { gradientTextStyles } from "../components/Text/TextStyles";
-import InputField from "../components/Form/InputField";
+// import InputField from "../components/Form/InputField";
 // import { useUpdateUserMutation } from "../store/API/UserAuthApi";
-import { toast } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
-import { loginSuccess } from "../store/Slices/userSlice";
+// import { toast } from "react-toastify";
+import {
+  useSelector,
+  // useDispatch
+} from "react-redux";
+// import { loginSuccess } from "../store/Slices/userSlice";
 import { RootState } from "../store";
 
 const Profile = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const storeUserData = useSelector((state: RootState) => state.user);
   console.log("storeUserData", storeUserData);
-  const [userData, setUserData] = useState(storeUserData);
+  // const [userData, setUserData] = useState(storeUserData);
 
   // const [updateUser] = useUpdateUserMutation();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setUserData({ ...userData, [e.target.name]: e.target.value });
+  // };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // await toast
-    //   .promise(
-    //     updateUser({
-    //       id: storeUserData?.id,
-    //       body: userData,
-    //     }).unwrap(),
-    //     {
-    //       pending: "Updating...",
-    //       success: "Updated successfully",
-    //       error: "Something went wrong",
-    //     }
-    //   )
-    //   .then(() => dispatch(loginSuccess(userData)));
-  };
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   // await toast
+  //   //   .promise(
+  //   //     updateUser({
+  //   //       id: storeUserData?.id,
+  //   //       body: userData,
+  //   //     }).unwrap(),
+  //   //     {
+  //   //       pending: "Updating...",
+  //   //       success: "Updated successfully",
+  //   //       error: "Something went wrong",
+  //   //     }
+  //   //   )
+  //   //   .then(() => dispatch(loginSuccess(userData)));
+  // };
 
   return (
     <div className="">
       <span className={`font-bold text-2xl ${gradientTextStyles}`}>
         User Profile
       </span>
-      <form onSubmit={handleSubmit}>
+      {/* <form onSubmit={handleSubmit}>
         <InputField
           label="First Name"
           placeholder="John Doe"
@@ -102,7 +105,7 @@ const Profile = () => {
             Cancel
           </button>
         </div>
-      </form>
+      </form> */}
     </div>
   );
 };
