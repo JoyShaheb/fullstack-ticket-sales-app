@@ -1,7 +1,9 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IEventData } from "../../types/interface";
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, getDoc } from "firebase/firestore";
 import { db } from "../../config/firebase-config";
+
+const collectionName = "events";
 
 export const EventsAPI = createApi({
   reducerPath: "EventsAPI",
@@ -11,7 +13,7 @@ export const EventsAPI = createApi({
     getAllEvents: builder.query<IEventData[], null>({
       queryFn: async () => {
         try {
-          const refID = await getDocs(collection(db, "events"));
+          const refID = await getDocs(collection(db, collectionName));
           const eventsData = refID.docs.map((doc) => {
             const documentID = doc.id;
             const data = doc.data();
@@ -31,15 +33,34 @@ export const EventsAPI = createApi({
       },
     }),
     getOneEvent: builder.query<IEventData, string>({
-      query: (id) => `/get-one-event/${id}`,
+      queryFn: async (id) => {
+        const refID = doc(db, collectionName, id);
+        const eventsSnapshot = await getDoc(refID);
+        try {
+          return {
+            data: eventsSnapshot?.data() as IEventData,
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
       providesTags: ["Events"],
     }),
     CreateEvent: builder.mutation({
-      query: (body) => ({
-        url: "/create-event",
-        method: "POST",
-        body,
-      }),
+      queryFn: async (body) => {
+        try {
+          await addDoc(collection(db, collectionName), body);
+          return {
+            data: "Event created successfully",
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
       invalidatesTags: ["Events"],
     }),
     updateEvent: builder.mutation({

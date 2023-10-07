@@ -89,12 +89,12 @@ const Events = () => {
           {sortedConcerts?.map((item: IEventData) => {
             return (
               <EventCard
-                key={item?._id}
+                key={item?.id}
                 {...item}
                 saveAnEventToBookMark={saveAnEventToBookMark}
                 removeAnEventFromBookmark={removeAnEventFromBookmark}
                 saved={bookmarksData?.findUserBookMarks?.bookmarks?.includes(
-                  item?._id
+                  item?.id
                 )}
               />
             );
@@ -112,12 +112,12 @@ const Events = () => {
           {sortedComedies?.map((item: IEventData) => {
             return (
               <EventCard
-                key={item?._id}
+                key={item?.id}
                 {...item}
                 saveAnEventToBookMark={saveAnEventToBookMark}
                 removeAnEventFromBookmark={removeAnEventFromBookmark}
                 saved={bookmarksData?.findUserBookMarks?.bookmarks?.includes(
-                  item?._id
+                  item?.id
                 )}
               />
             );

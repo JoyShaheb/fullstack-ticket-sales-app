@@ -26,7 +26,7 @@ const EventDetailsPage = () => {
   const params = useParams<{ id: string }>();
   const eventId = params.id;
   const dispatch = useDispatch();
-  const token = useSelector((state: RootState) => state?.user?.token);
+  const token = useSelector((state: RootState) => state.user.userUid);
   console.log("eventID", eventId);
 
   const [quantity, setQuantity] = useState(0);
@@ -70,10 +70,10 @@ const EventDetailsPage = () => {
   const handleBookmarkClick = () => {
     if (isSaved) {
       removeAnEventFromBookmark({
-        eventID: (data as IEventData)._id as string,
+        eventID: (data as IEventData).id as string,
       });
     } else {
-      saveAnEventToBookMark({ eventID: (data as IEventData)._id as string });
+      saveAnEventToBookMark({ eventID: (data as IEventData).id as string });
     }
     setIsSaved(!isSaved);
   };
@@ -185,7 +185,7 @@ const EventDetailsPage = () => {
             value={quantity}
             onChange={handleQuantityChange}
             className="w-16 text-center border"
-            style={{ color: 'black' }}
+            style={{ color: "black" }}
           />
           <button
             type="button"
