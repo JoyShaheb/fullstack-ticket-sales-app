@@ -8,6 +8,8 @@ import Events from "./Events";
 import Profile from "./Profile";
 import EventDetailsPage from "./EventDetailsPage";
 import CreateEvent from "./CreateEvent";
+import ForgotPassword from "./ForgotPassword";
+import ResetPassword from "./ResetPassword";
 
 export {
   Home,
@@ -20,4 +22,6 @@ export {
   Profile,
   EventDetailsPage,
   CreateEvent,
+  ForgotPassword,
+  ResetPassword,
 };

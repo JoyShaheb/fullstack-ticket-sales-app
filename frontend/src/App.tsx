@@ -14,6 +14,8 @@ import {
   Profile,
   EventDetailsPage,
   CreateEvent,
+  ForgotPassword,
+  ResetPassword,
 } from "./pages";
 import Sidebar from "./components/Sidebar/Sidebar";
 import ProtectedRoutes from "./pages/utils/ProtectedRoutes";
@@ -55,6 +57,8 @@ const App = () => {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Sidebar>

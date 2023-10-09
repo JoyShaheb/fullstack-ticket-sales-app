@@ -11,8 +11,8 @@ import { IUserSignInData } from "../types/interface";
 
 const Login = () => {
   const initialState: IUserSignInData = {
-    email: "joy@gmail.com",
-    password: "123abc",
+    email: "khondokoralam@gmail.com",
+    password: "1234567",
   };
 
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const Login = () => {
       })
       .then(() => setData(initialState))
       .then(() => navigate("/profile"))
-      .catch((err) => console.log(err));
+      .catch((err) => toast.error(err));
   };
 
   const GoogleAuth = async () =>
@@ -44,7 +44,6 @@ const Login = () => {
         success: "Successfully created user!",
         error: "Could not create user!",
       })
-      .then((res) => console.log(res))
       .then(() => navigate("/profile"))
       .catch((err) => toast.error(err));
 
@@ -78,6 +77,13 @@ const Login = () => {
                 type="password"
                 value={data.password}
               />
+              <button
+                onClick={() => navigate("/forgot-password")}
+                type="button"
+                className="text-primary-600 my-0"
+              >
+                Forgot Password
+              </button>
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
